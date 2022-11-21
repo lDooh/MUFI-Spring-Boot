@@ -1,5 +1,6 @@
 package com.mufi.mufiServer.service;
 
+import com.mufi.mufiServer.dao.PaymentMapper;
 import com.mufi.mufiServer.dao.PhotoMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,9 @@ import java.util.Map;
 public class PhotoServiceImpl implements PhotoService {
     @Autowired
     private final PhotoMapper photoMapper;
+
+    @Autowired
+    private final PaymentMapper paymentMapper;
 
     @Override
     public Map<String, Object> getPhotoFeed(String id) {
