@@ -22,5 +22,5 @@ public class PaymentDto {
     private String payment_content;
 
 
-    private ArrayList<PhotosDto> photosDtoArrayList;
+    private ArrayList<PhotosDto> photosDtoArrayList = new ArrayList<>();
 }
