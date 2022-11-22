@@ -21,4 +21,9 @@ public class PhotoController {
     public Map<String, Object> getPhotoFeed(@PathVariable("id") String id) {
         return photoService.getPhotoFeed(id);
     }
+
+    @GetMapping("payment/{payment_id}")
+    public Map<String, Object> getPaymentPhotos(@PathVariable("payment_id") String payment_id) {
+        return photoService.getPaymentPhotos(payment_id);
+    }
 }

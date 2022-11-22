@@ -32,17 +32,37 @@ public class PhotoServiceImpl implements PhotoService {
         /* 사진 피드 전달 내용
         * payment_id, payment_date, photo_number(1), image_content
         * */
+        // TODO: PhotoInfo 전달하도록 구현, base64 전달
+        // TODO: 썸네일 전달
+
         try {
-            ArrayList<PaymentDto> paymentDtoArrayList = paymentMapper.getPhotoFeed(id);
-            Iterator<PaymentDto> itr = paymentDtoArrayList.iterator();
+//            ArrayList<PaymentDto> paymentDtoArrayList = paymentMapper.getPhotoFeed(id);
+//            Iterator<PaymentDto> itr = paymentDtoArrayList.iterator();
+//
+//            ArrayList<PhotoInfo> photoInfoArrayList = new ArrayList<>();
+//
+//            while (itr.hasNext()) {
+//                PaymentDto paymentDto = itr.next();
+//                // TODO
+//                photoInfoArrayList.add(new PhotoInfo(null, null, null, null));
+//            }
+//            map.put("payments", paymentDtoArrayList);
+            map.put("payments", paymentMapper.getPhotoFeed(id));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-            ArrayList<PhotoInfo> photoInfoArrayList = new ArrayList<>();
+        return map;
+    }
 
-            while (itr.hasNext()) {
-                PaymentDto paymentDto = itr.next();
-                // TODO
-                photoInfoArrayList.add(new PhotoInfo(null, null, null, null));
-            }
+    @Override
+    public Map<String, Object> getPaymentPhotos(String payment_id) {
+        Map<String, Object> map = new HashMap<>();
+
+        try {
+            // TODO: PhotoInfo 전달하도록 구현, base64 전달
+            // TODO: 썸네일 전달
+            map.put("photos", paymentMapper.getPaymentPhotos(payment_id));
         } catch (Exception e) {
             e.printStackTrace();
         }
