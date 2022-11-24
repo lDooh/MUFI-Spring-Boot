@@ -26,4 +26,9 @@ public class PhotoController {
     public Map<String, Object> getPaymentPhotos(@PathVariable("payment_id") String payment_id) {
         return photoService.getPaymentPhotos(payment_id);
     }
+
+    @GetMapping("original/{payment_id}/{photo_number}")
+    public Map<String, Object> getOriginalPhoto(@PathVariable("payment_id") String payment_id, @PathVariable("photo_number") int photo_number) {
+        return photoService.getOriginalPhoto(payment_id, photo_number);
+    }
 }

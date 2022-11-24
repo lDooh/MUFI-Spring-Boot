@@ -70,6 +70,19 @@ public class PhotoServiceImpl implements PhotoService {
         return map;
     }
 
+    @Override
+    public Map<String, Object> getOriginalPhoto(String payment_id, int photo_number) {
+        Map<String, Object> map = new HashMap<>();
+
+        try {
+            map.put("photo",photoMapper.getOriginalPhoto(payment_id, photo_number));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return map;
+    }
+
     @Getter
     class PhotoInfo {
         private String payment_id;

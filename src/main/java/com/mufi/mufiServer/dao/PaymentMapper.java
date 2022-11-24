@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 @Mapper
 public interface PaymentMapper {
-    // TODO: getFirstPhoto, getPhotos 메소드는 PhotoMapper에 선언
     @Select("SELECT *" +
             " FROM payment_history" +
             " WHERE user_id = #{id}")
@@ -20,14 +19,9 @@ public interface PaymentMapper {
             @Result(property = "payment_date", column = "payment_date"),
             @Result(property = "payment_content", column = "payment_content"),
             @Result(property = "photosDtoArrayList", column = "payment_id", javaType = ArrayList.class,
-                    many = @Many(select = "getFirstPhotos"))
+                    many = @Many(select = "com.mufi.mufiServer.dao.PhotoMapper.getFirstPhotos"))
     })
     ArrayList<PaymentDto> getPhotoFeed(@Param("id") String id);
-
-    // 한 사용자의 대표 사진들을 받아옴 (ArrayList size: 1)
-    @Select("SELECT * FROM photos WHERE payment_id = #{payment_id} AND photo_number = 1")
-    ArrayList<PhotosDto> getFirstPhotos(@Param("payment_id") String payment_id);
-
     
     // 사진 묶음(10장) 전송
     @Select("SELECT *" +
@@ -41,10 +35,7 @@ public interface PaymentMapper {
             @Result(property = "payment_date", column = "payment_date"),
             @Result(property = "payment_content", column = "payment_content"),
             @Result(property = "photosDtoArrayList", column = "payment_id", javaType = ArrayList.class,
-                    many = @Many(select = "getPhotos"))
+                    many = @Many(select = "com.mufi.mufiServer.dao.PhotoMapper.getPhotos"))
     })
     PaymentDto getPaymentPhotos(String payment_id);
-
-    @Select("SELECT * FROM photos WHERE payment_id = #{payment_id}")
-    ArrayList<PhotosDto> getPhotos(@Param("payment_id") String payment_id);
 }
