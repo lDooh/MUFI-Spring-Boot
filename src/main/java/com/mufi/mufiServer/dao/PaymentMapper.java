@@ -8,6 +8,10 @@ import java.util.ArrayList;
 
 @Mapper
 public interface PaymentMapper {
+    // 결제 기록 열람
+    @Select("SELECT * FROM payment_history WHERE payment_id = #{payment_id}")
+    PaymentDto getPayment(@Param("payment_id") String payment_id);
+
     @Select("SELECT *" +
             " FROM payment_history" +
             " WHERE user_id = #{id}")
@@ -37,5 +41,5 @@ public interface PaymentMapper {
             @Result(property = "photosDtoArrayList", column = "payment_id", javaType = ArrayList.class,
                     many = @Many(select = "com.mufi.mufiServer.dao.PhotoMapper.getPhotos"))
     })
-    PaymentDto getPaymentPhotos(String payment_id);
+    PaymentDto getPaymentPhotos(@Param("payment_id") String payment_id);
 }

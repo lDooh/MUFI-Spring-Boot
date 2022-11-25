@@ -3,17 +3,18 @@ package com.mufi.mufiServer.service;
 import com.mufi.mufiServer.dao.PaymentMapper;
 import com.mufi.mufiServer.dao.PhotoMapper;
 import com.mufi.mufiServer.dto.PaymentDto;
+import com.mufi.mufiServer.dto.PhotosDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional
@@ -29,25 +30,23 @@ public class PhotoServiceImpl implements PhotoService {
     public Map<String, Object> getPhotoFeed(String id) {
         Map<String, Object> map = new HashMap<>();
 
-        /* 사진 피드 전달 내용
-        * payment_id, payment_date, photo_number(1), image_content
-        * */
-        // TODO: PhotoInfo 전달하도록 구현, base64 전달
         // TODO: 썸네일 전달
-
         try {
-//            ArrayList<PaymentDto> paymentDtoArrayList = paymentMapper.getPhotoFeed(id);
-//            Iterator<PaymentDto> itr = paymentDtoArrayList.iterator();
-//
-//            ArrayList<PhotoInfo> photoInfoArrayList = new ArrayList<>();
-//
-//            while (itr.hasNext()) {
-//                PaymentDto paymentDto = itr.next();
-//                // TODO
-//                photoInfoArrayList.add(new PhotoInfo(null, null, null, null));
-//            }
-//            map.put("payments", paymentDtoArrayList);
-            map.put("payments", paymentMapper.getPhotoFeed(id));
+            ArrayList<PaymentDto> paymentDtoArrayList = paymentMapper.getPhotoFeed(id);     // 1결제-1사진(ArrayList)
+            Iterator<PaymentDto> itr = paymentDtoArrayList.iterator();
+
+            // 클라이언트에게 전달될 데이터
+            ArrayList<PhotoInfo> photoInfoArrayList = new ArrayList<>();
+
+            while (itr.hasNext()) {
+                PaymentDto paymentDto = itr.next();
+
+                photoInfoArrayList.add(new PhotoInfo(paymentDto.getPayment_id(),
+                        paymentDto.getPayment_date(),
+                        paymentDto.getPhotosDtoArrayList().get(0).getPhoto_number(),
+                        stringToByte(paymentDto.getPhotosDtoArrayList().get(0).getImage_path())));
+            }
+            map.put("payments", photoInfoArrayList);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,9 +59,22 @@ public class PhotoServiceImpl implements PhotoService {
         Map<String, Object> map = new HashMap<>();
 
         try {
-            // TODO: PhotoInfo 전달하도록 구현, base64 전달
             // TODO: 썸네일 전달
-            map.put("photos", paymentMapper.getPaymentPhotos(payment_id));
+            PaymentDto paymentDto = paymentMapper.getPaymentPhotos(payment_id);
+            ArrayList<PhotosDto> photosDtoArrayList = paymentDto.getPhotosDtoArrayList();
+
+            // 클라이언트에게 전달될 데이터
+            ArrayList<PhotoInfo> photoInfoArrayList = new ArrayList<>();
+
+            for (PhotosDto photosDto : photosDtoArrayList) {
+                photoInfoArrayList.add(new PhotoInfo(
+                        paymentDto.getPayment_id(),
+                        paymentDto.getPayment_date(),
+                        photosDto.getPhoto_number(),
+                        stringToByte(photosDto.getImage_path())
+                ));
+            }
+            map.put("photos", photoInfoArrayList);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,12 +87,29 @@ public class PhotoServiceImpl implements PhotoService {
         Map<String, Object> map = new HashMap<>();
 
         try {
-            map.put("photo",photoMapper.getOriginalPhoto(payment_id, photo_number));
+            PhotosDto photosDto = photoMapper.getOriginalPhoto(payment_id, photo_number);
+            PaymentDto paymentDto = paymentMapper.getPayment(payment_id);
+
+            PhotoInfo photoInfo = new PhotoInfo(
+                    photosDto.getPayment_id(),
+                    paymentDto.getPayment_date(),
+                    photosDto.getPhoto_number(),
+                    stringToByte(photosDto.getImage_path())
+            );
+
+            map.put("photo", photoInfo);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return map;
+    }
+
+    // 쿼리 결과(filePath)에서 이미지 경로를 읽고 Base64 String으로 인코딩
+    private String stringToByte(String filePath) throws IOException {
+        byte[] imageContentByte = FileUtils.readFileToByteArray(new File(filePath));
+
+        return Base64.getEncoder().encodeToString(imageContentByte);
     }
 
     @Getter
