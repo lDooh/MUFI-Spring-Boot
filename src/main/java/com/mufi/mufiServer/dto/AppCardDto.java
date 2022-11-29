@@ -15,5 +15,5 @@ public class AppCardDto {
     // ^[0-9]{16}$
     private String card_number;
 
-    private Date card_exp;
+    private Date card_exp_date;
 }
