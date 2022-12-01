@@ -42,4 +42,7 @@ public interface PaymentMapper {
                     many = @Many(select = "com.mufi.mufiServer.dao.PhotoMapper.getPhotos"))
     })
     PaymentDto getPaymentPhotos(@Param("payment_id") String payment_id);
+
+    @Select("SELECT shop_ip FROM payment_history WHERE payment_id = #{payment_id}")
+    String getShopId(@Param("payment_id") String payment_id);
 }
