@@ -15,7 +15,6 @@ import java.util.Map;
 @RequestMapping("app/user")
 @RequiredArgsConstructor
 public class UserController {
-    @Autowired
     private final UserService userService;
 
     @GetMapping("/login/{id}/{pw}")

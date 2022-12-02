@@ -14,7 +14,6 @@ import java.util.Map;
 @RequestMapping("app/qr")
 @RequiredArgsConstructor
 public class QrController {
-    @Autowired
     private final QrService qrService;
 
     @GetMapping("/{id}/{kiosk}")

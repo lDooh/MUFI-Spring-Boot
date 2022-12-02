@@ -18,7 +18,6 @@ import java.util.Map;
 @Transactional
 @RequiredArgsConstructor
 public class ShopServiceImpl implements ShopService {
-    @Autowired
     private final ShopMapper shopMapper;
 
     @Override

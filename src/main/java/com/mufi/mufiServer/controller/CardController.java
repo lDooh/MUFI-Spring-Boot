@@ -15,7 +15,6 @@ import java.util.Map;
 @RequestMapping("app/card")
 @RequiredArgsConstructor
 public class CardController {
-    @Autowired
     private final CardService cardService;
 
     @GetMapping("/register/{cardNumber}/{exYy}/{exMm}/{birth}/{id}")

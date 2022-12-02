@@ -14,7 +14,6 @@ import java.util.Map;
 @RequestMapping("test")
 @RequiredArgsConstructor
 public class TestController {
-    @Autowired
     private final TestService testService;
 
     @GetMapping("/hello")

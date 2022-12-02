@@ -14,7 +14,6 @@ import java.util.Map;
 @RequestMapping("app/photo")
 @RequiredArgsConstructor
 public class PhotoController {
-    @Autowired
     private final PhotoService photoService;
 
     @GetMapping("feed/{id}")

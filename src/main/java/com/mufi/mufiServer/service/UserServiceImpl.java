@@ -15,7 +15,6 @@ import java.util.Map;
 @Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    @Autowired
     private final UserMapper userMapper;
 
     @Override

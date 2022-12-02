@@ -14,7 +14,6 @@ import java.util.Map;
 @RequestMapping("app/shop")
 @RequiredArgsConstructor
 public class ShopController {
-    @Autowired
     private final ShopServiceImpl shopService;
 
     @GetMapping("/location")

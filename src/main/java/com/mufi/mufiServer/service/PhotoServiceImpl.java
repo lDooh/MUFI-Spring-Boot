@@ -24,13 +24,10 @@ import java.util.*;
 @Transactional
 @RequiredArgsConstructor
 public class PhotoServiceImpl implements PhotoService {
-    @Autowired
     private final PhotoMapper photoMapper;
 
-    @Autowired
     private final PaymentMapper paymentMapper;
 
-    @Autowired
     private final ShopMapper shopMapper;
 
     @Override

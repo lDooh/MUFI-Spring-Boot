@@ -16,7 +16,6 @@ import java.util.Map;
 @Transactional
 @RequiredArgsConstructor
 public class CardServiceImpl implements CardService {
-    @Autowired
     private final CardMapper cardMapper;
 
     @Override
