@@ -8,10 +8,13 @@ import com.mufi.mufiServer.dto.PhotosDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -34,7 +37,6 @@ public class PhotoServiceImpl implements PhotoService {
     public Map<String, Object> getPhotoFeed(String id) {
         Map<String, Object> map = new HashMap<>();
 
-        // TODO: 썸네일 전달
         try {
             ArrayList<PaymentDto> paymentDtoArrayList = paymentMapper.getPhotoFeed(id);     // 1결제-1사진(ArrayList)
             Iterator<PaymentDto> itr = paymentDtoArrayList.iterator();
@@ -48,7 +50,7 @@ public class PhotoServiceImpl implements PhotoService {
                 photoInfoArrayList.add(new PhotoInfo(paymentDto.getPayment_id(),
                         paymentDto.getPayment_date(),
                         paymentDto.getPhotosDtoArrayList().get(0).getPhoto_number(),
-                        stringToByte(paymentDto.getPhotosDtoArrayList().get(0).getImage_path())));
+                        imageToThumbnailByte(paymentDto.getPhotosDtoArrayList().get(0).getImage_path())));
             }
             map.put("photo", photoInfoArrayList);
         } catch (Exception e) {
@@ -63,7 +65,6 @@ public class PhotoServiceImpl implements PhotoService {
         Map<String, Object> map = new HashMap<>();
 
         try {
-            // TODO: 썸네일 전달
             PaymentDto paymentDto = paymentMapper.getPaymentPhotos(payment_id);
             ArrayList<PhotosDto> photosDtoArrayList = paymentDto.getPhotosDtoArrayList();
 
@@ -75,7 +76,7 @@ public class PhotoServiceImpl implements PhotoService {
                         paymentDto.getPayment_id(),
                         paymentDto.getPayment_date(),
                         photosDto.getPhoto_number(),
-                        stringToByte(photosDto.getImage_path())
+                        imageToThumbnailByte(photosDto.getImage_path())
                 ));
             }
             map.put("photo", photoInfoArrayList);
@@ -99,7 +100,7 @@ public class PhotoServiceImpl implements PhotoService {
                     photosDto.getPayment_id(),
                     paymentDto.getPayment_date(),
                     photosDto.getPhoto_number(),
-                    stringToByte(photosDto.getImage_path())
+                    imageToByte(photosDto.getImage_path())
             );
 
             ArrayList<PhotoInfo> photoInfoArrayList = new ArrayList<>();
@@ -116,10 +117,22 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     // 쿼리 결과(filePath)에서 이미지 경로를 읽고 Base64 String으로 인코딩
-    private String stringToByte(String filePath) throws IOException {
+    private String imageToByte(String filePath) throws IOException {
         byte[] imageContentByte = FileUtils.readFileToByteArray(new File(filePath));
 
         return Base64.getEncoder().encodeToString(imageContentByte);
+    }
+
+    // 썸네일 생성 메소드
+    private String imageToThumbnailByte(String filepath) throws IOException {
+        BufferedImage bi = ImageIO.read(new File(filepath));
+        BufferedImage thumbnail = Scalr.resize(bi, 450);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+        ImageIO.write(thumbnail, "png", bos);
+        byte[] imageBytes = bos.toByteArray();
+
+        return new String(Base64.getEncoder().encode(imageBytes));
     }
 
     // 파일 용량 반환
