@@ -65,4 +65,22 @@ public class CardServiceImpl implements CardService {
 
         return map;
     }
+
+    @Override
+    public Map<String, Object> deleteCard(String card_id) {
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("isDeleteCardSuccess", 0);
+
+        try {
+            boolean isDeleteCardSuccess = cardMapper.deleteCard(card_id);
+
+            map.replace("isDeleteCardSuccess", 1);
+        } catch (Exception e) {
+            map.put("Failed Type", -2);
+            e.printStackTrace();
+        }
+
+        return map;
+    }
 }

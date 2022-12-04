@@ -1,10 +1,7 @@
 package com.mufi.mufiServer.dao;
 
 import com.mufi.mufiServer.dto.AppCardDto;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -17,4 +14,7 @@ public interface CardMapper {
 
     @Select("Select * FROM app_card WHERE user_id = #{id}")
     ArrayList<AppCardDto> getCards(@Param("id") String id);
+
+    @Delete("DELETE FROM app_card WHERE card_id = #{card_id}")
+    boolean deleteCard(@Param("card_id") String card_id);
 }

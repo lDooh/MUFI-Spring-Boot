@@ -28,4 +28,9 @@ public class CardController {
     public Map<String, Object> getCards(@PathVariable("id") String id) {
         return cardService.getCards(id);
     }
+
+    @GetMapping("delete/{card_id}")
+    public Map<String, Object> deleteCard(@PathVariable("card_id") String card_id) {
+        return cardService.deleteCard(card_id);
+    }
 }
