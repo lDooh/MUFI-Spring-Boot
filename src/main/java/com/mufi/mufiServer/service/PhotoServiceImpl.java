@@ -54,6 +54,7 @@ public class PhotoServiceImpl implements PhotoService {
             }
             map.put("photo", photoInfoArrayList);
         } catch (Exception e) {
+            map.put("Failed Type", -2);
             e.printStackTrace();
         }
 
@@ -81,6 +82,7 @@ public class PhotoServiceImpl implements PhotoService {
             }
             map.put("photo", photoInfoArrayList);
         } catch (Exception e) {
+            map.put("Failed Type", -2);
             e.printStackTrace();
         }
 
@@ -110,6 +112,28 @@ public class PhotoServiceImpl implements PhotoService {
             map.put("photo_size", getImageMB(photosDto.getImage_path()));
             map.put("shop_name", shopName);
         } catch (Exception e) {
+            map.put("Failed Type", -2);
+            e.printStackTrace();
+        }
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> deletePhoto(String payment_id, int photo_number) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("isDeletePhotoSuccess", 0);
+
+        try {
+            int isDeletePhotoSuccess = photoMapper.deletePhoto(payment_id, photo_number);
+
+            if (isDeletePhotoSuccess > 0) { // 사진 삭제 성공
+                map.replace("isDeletePhotoSuccess", 1);
+            } else {
+                map.put("Failed Type", -1);
+            }
+        } catch (Exception e) {
+            map.put("Failed Type", -2);
             e.printStackTrace();
         }
 

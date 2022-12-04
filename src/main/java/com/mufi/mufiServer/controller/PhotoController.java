@@ -30,4 +30,9 @@ public class PhotoController {
     public Map<String, Object> getOriginalPhoto(@PathVariable("payment_id") String payment_id, @PathVariable("photo_number") int photo_number) {
         return photoService.getOriginalPhoto(payment_id, photo_number);
     }
+
+    @GetMapping("delete/{payment_id}/{photo_number}")
+    public Map<String, Object> deletePhoto(@PathVariable("payment_id") String payment_id, @PathVariable("photo_number") int photo_number) {
+        return photoService.deletePhoto(payment_id, photo_number);
+    }
 }

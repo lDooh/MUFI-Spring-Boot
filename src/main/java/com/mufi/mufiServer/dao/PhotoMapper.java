@@ -1,6 +1,7 @@
 package com.mufi.mufiServer.dao;
 
 import com.mufi.mufiServer.dto.PhotosDto;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -20,4 +21,7 @@ public interface PhotoMapper {
     // 선택된 사진 한 장
     @Select("SELECT * FROM photos WHERE payment_id = #{payment_id} AND photo_number = #{photo_number}")
     PhotosDto getOriginalPhoto(@Param("payment_id") String payment_id, @Param("photo_number") int photo_number);
+
+    @Delete("DELETE FROM photos WHERE payment_id = #{payment_id} AND photo_number = #{photo_number}")
+    int deletePhoto(@Param("payment_id") String payment_id, @Param("photo_number") int photo_number);
 }
