@@ -13,7 +13,7 @@ import java.util.Map;
 public class QrServiceImpl implements QrService {
 
     @Override
-    public Map<String, Object> qrScanning(String id, String kiosk) {
+    public Map<String, Object> qrScanning(String kiosk_ip, String shop_id, int kiosk_number, String user_id) {
         Map<String, Object> map = new HashMap<>();
         
         map.put("isQrSuccess", 1);

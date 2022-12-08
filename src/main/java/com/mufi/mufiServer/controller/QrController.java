@@ -16,8 +16,16 @@ import java.util.Map;
 public class QrController {
     private final QrService qrService;
 
-    @GetMapping("/{id}/{kiosk}")
-    public Map<String, Object> qrScanning(@PathVariable("id") String id, @PathVariable("kiosk") String kiosk) {
-        return qrService.qrScanning(id, kiosk);
+    @GetMapping("/{kiosk_ip}/{shop_id}/{kiosk_number}/{user_id}")
+    public Map<String, Object> qrScanning(@PathVariable("kiosk_ip") String kiosk_ip,
+                                          @PathVariable("shop_id") String shop_id,
+                                          @PathVariable("kiosk_number") int kiosk_number,
+                                          @PathVariable("user_id") String user_id) {
+        return qrService.qrScanning(kiosk_ip, shop_id, kiosk_number, user_id);
+    }
+
+    @GetMapping("/test")
+    public boolean test() {
+        return true;
     }
 }
