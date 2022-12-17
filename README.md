@@ -1,27 +1,4 @@
 # 무인사진관 Mufi Service 서버
-`임시 구현`
-
-# TODO
-+ PhotoServiceImpl
-  + 데이터베이스에서 파일 경로 받아옴
-  + 해당 파일 경로로 가서 사진 파일을 base64 인코딩, 전송
-+ PaymentDto, PhotosDto 조인 설계
-  + PaymentDto 내부에 컬렉션 선언
-+ 아래 사이트 참고해서 XML 파일에서 쿼리문 작성
-  + https://hayden-archive.tistory.com/326
-  + https://devlog-wjdrbs96.tistory.com/200
-+ DTO와 JOIN 관련 공부
-  + ResultMap
-  + JPA
-+ JPA로 서버 재구현
-
-# [Spring Initializr](https://start.spring.io/) 사용
-+ ADD DEPENDENCIES
-  + Lombok
-  + MySQL
-  + Spring Web
-  + <del>Spring Data JPA</del>
-  + MyBatis
   
 # 프로젝트 설정 예시
 ## application.properties 설정
